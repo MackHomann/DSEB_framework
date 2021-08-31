@@ -11,13 +11,13 @@ function buttonMaker() constructor{
 	static Init = function() {
 		buttonList = ds_list_create();
 	}
-	static Create	=	 function (_x, _y, _width, _height, _name, _scr, _info = noone) {
+	static Create = function (_x, _y, _width, _height, _name, _scr, _info = noone) {
 		ds_list_add(buttonList, new button(_x, _y, _width, _height, _name, _scr, _info));
 	}
-	static Clear	= function() {
+	static Clear = function() {
 		ds_list_clear(buttonList)	
 	}
-	static Draw		= function() {
+	static Draw = function() {
 		for (var i = 0; i < ds_list_size(buttonList); ++i) {
 			var b = buttonList[| i];
 			with (b) {
@@ -29,7 +29,7 @@ function buttonMaker() constructor{
 		}		
 	}
 		
-	static Run		= function () {
+	static Run = function () {
 		if (mouse_check_button_pressed(mb_left)) {
 			var vx = camera_get_view_x(view_camera[0]);
 			var vy = camera_get_view_y(view_camera[0]);
