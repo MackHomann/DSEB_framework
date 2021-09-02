@@ -9,9 +9,8 @@ function set_fa_standard() {
 
 function buttonMaker() constructor{
 	font = -1;
-	static Init = function() {
-		buttonList = ds_list_create();
-	}
+	buttonList = ds_list_create();
+	
 	static Create = function (_x, _y, _width, _height, _name, _scr, _info = noone) {
 		ds_list_add(buttonList, new button(_x, _y, _width, _height, _name, _scr, _info));
 	}
