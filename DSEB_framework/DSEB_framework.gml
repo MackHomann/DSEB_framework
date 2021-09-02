@@ -8,6 +8,7 @@ function set_fa_standard() {
 }
 
 function buttonMaker() constructor{
+	font = -1;
 	static Init = function() {
 		buttonList = ds_list_create();
 	}
@@ -17,22 +18,25 @@ function buttonMaker() constructor{
 	static Clear = function() {
 		ds_list_clear(buttonList)	
 	}
-	static Draw_In_GUI = function() {
+	static Draw = function() {
 		for (var i = 0; i < ds_list_size(buttonList); ++i) {
 			var b = buttonList[| i];
 			with (b) {
 				
 				var vx = camera_get_view_x(view_camera[0]);
 				var vy = camera_get_view_y(view_camera[0]);
-				var inside = ((mouse_x-vx)*2 > x && (mouse_x-vx)*2 < (x+width) && (mouse_y-vy)*2 > y && (mouse_y-vy)*2 < (y+height));
+				var inside = ((mouse_x-vx)*2 > x and (mouse_x-vx)*2 < (x+width) and (mouse_y-vy)*2 > y and (mouse_y-vy)*2 < (y+height));
 				var col = (inside) ? c_black : c_grey;
 				
 				draw_rectangle_colour(x, y, x + width, y + height, col , col, col, col, false);
 				set_fa_middle();
-				if (!is_string(name) && asset_get_type(sprite_get_name(name)) == asset_sprite) {
+				if (!is_string(name) and asset_get_type(sprite_get_name(name)) == asset_sprite) {
 					draw_sprite(name, -1, x + width/2, y + height/2);
 				} else {
-					draw_text_colour(x + width/2, y + height/2, string(name), c_orange, c_orange, c_orange, c_orange, 1);	
+					var savedFont = draw_get_font();
+					if (font_exists(other.font)) draw_set_font(other.font);
+					draw_text_colour(x + width/2, y + height/2, string(name), c_orange, c_orange, c_orange, c_orange, 1);
+					draw_set_font(savedFont)
 				}
 				
 				set_fa_standard();
@@ -53,13 +57,22 @@ function buttonMaker() constructor{
 			for (var i = 0; i < ds_list_size(buttonList); ++i) {
 				var b = buttonList[| i];
 				with (b) {	
-					if((mouse_x-vx)*2 > x && (mouse_x-vx)*2 < (x+width) && (mouse_y-vy)*2 > y && (mouse_y-vy)*2 < (y+height)) {
+					if((mouse_x-vx)*2 > x and (mouse_x-vx)*2 < (x+width) and (mouse_y-vy)*2 > y and (mouse_y-vy)*2 < (y+height)) {
 						if (info != noone) {
-							scr(info);
+							try {
+								scr(info);
+							} catch(_fail) {
+								show_debug_message(_fail.message);	
+								show_debug_message("Button : " + string(name) + "failed.");		
+							}
 						} else {
-							scr();
+							try {
+								scr();
+							} catch(_fail) {
+								show_debug_message(_fail.message);	
+								show_debug_message("Button : " + string(name) + "failed.");		
+							}
 						}
-							
 					}
 				}
 			}
